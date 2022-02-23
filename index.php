@@ -30,10 +30,17 @@ $aluno->insert();
 echo $aluno;*/
 //--------------------------------------------
 
-//Atualizando o usuário.
+/*/Atualizando o usuário.
 $usuario = new Usuario();
 $usuario->loadByID(7);
 $usuario->update("professor", "abc");
+echo $usuario;*/
+//--------------------------------------------
+
+//Excluindo o usuário.
+$usuario = new Usuario();
+$usuario->loadByID(6);
+$usuario->delete();
 echo $usuario;
 
 ?>

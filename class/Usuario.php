@@ -120,6 +120,21 @@ class Usuario{
 	}
 	//--
 
+	//Update.
+	public function update($login, $senha){
+		$this->setLogin($login);
+		$this->setSenha($senha);
+
+		$sql = new Sql();
+
+		$sql->query("UPDATE tb_usuarios SET login = :LOGIN, senha = :SENHA WHERE idusuario = :ID", array(
+			":LOGIN"=>$this->getLogin(),
+			":SENHA"=>$this->getSenha(),
+			":ID"=>$this->getIdUsuario()
+		));
+	}
+	//--
+
 	//Dados.
 	public function setData($data){
 		$this->setIdUsuario($data['idusuario']);

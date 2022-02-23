@@ -24,9 +24,16 @@ $usuario->login("zezinho", "12");
 echo $usuario;*/
 //--------------------------------------------
 
-//Inserindo um novo usuário.
+/*/Inserindo um novo usuário.
 $aluno = new Usuario("aluno", "@lun0");
 $aluno->insert();
-echo $aluno;
+echo $aluno;*/
+//--------------------------------------------
+
+//Atualizando o usuário.
+$usuario = new Usuario();
+$usuario->loadByID(7);
+$usuario->update("professor", "abc");
+echo $usuario;
 
 ?>

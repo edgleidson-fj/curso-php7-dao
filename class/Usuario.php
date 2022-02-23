@@ -43,6 +43,7 @@ class Usuario{
 	}
 
 	//Métodos.
+	//Buscar por ID.
 	public function loadById($id){
 		$sql = new Sql();
 
@@ -57,6 +58,47 @@ class Usuario{
 			$this->setLogin($linha['login']);
 			$this->setSenha($linha['senha']);
 			$this->setDtCadastro(new DateTime($linha['dtcadastro'])); //DateTime().
+		}
+	}
+	//--
+
+	//Listar tudo - Método Estático -> Não necessita Instância a Classe para ser utilizado.
+	public static function getList(){
+		$sql = new Sql();
+
+		return $sql->select("SELECT * FROM tb_usuarios ORDER BY login");
+	}
+	//--
+
+	//Buscar pelo login - Método Estático.
+	public static function search($login){
+		$sql = new Sql();
+
+		return $sql->select("SELECT * FROM tb_usuarios WHERE login LIKE :SEARCH ORDER BY login", array(
+			":SEARCH"=>"%" . $login . "%"
+		));
+	}
+	//--
+
+	//Buscar dados do login autenticado.
+	public function login($login, $senha){
+		$sql = new Sql();
+
+		$result = $sql->select("SELECT * FROM tb_usuarios WHERE login = :LOGIN AND senha = :SENHA", array(
+			":LOGIN"=>$login,
+			":SENHA"=>$senha
+		));
+
+		if(count($result) > 0){
+			$linha = $result[0];
+
+			$this->setIdUsuario($linha['idusuario']);
+			$this->setLogin($linha['login']);
+			$this->setSenha($linha['senha']);
+			$this->setDtCadastro(new DateTime($linha['dtcadastro'])); //DateTime().
+		}
+		else{
+			throw new Exception("Login e/ou senha inválidos.");
 		}
 	}
 	//--

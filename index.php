@@ -18,9 +18,15 @@ $buscarPorLogin = Usuario::search("la");
 echo json_encode($buscarPorLogin);*/
 //--------------------------------------------
 
-//Carregando usuário autenticado.
+/*/Carregando usuário autenticado.
 $usuario = new Usuario();
 $usuario->login("zezinho", "12");
-echo $usuario;
+echo $usuario;*/
+//--------------------------------------------
+
+//Inserindo um novo usuário.
+$aluno = new Usuario("aluno", "@lun0");
+$aluno->insert();
+echo $aluno;
 
 ?>

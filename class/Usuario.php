@@ -41,6 +41,15 @@ class Usuario{
 	public function setDtCadastro($dtCadastro){
 		$this->dtCadastro = $dtCadastro;
 	}
+	//---
+
+	//Construtor com parâmetros por padrão vázios.
+	public function __construct($login = "", $senha = ""){
+		$this->setLogin($login);
+		$this->setSenha($senha);
+	}
+	//--
+
 
 	//Métodos.
 	//Buscar por ID.
@@ -51,13 +60,8 @@ class Usuario{
 			":ID"=>$id
 		));
 
-		if(count($result) > 0){
-			$linha = $result[0];
-
-			$this->setIdUsuario($linha['idusuario']);
-			$this->setLogin($linha['login']);
-			$this->setSenha($linha['senha']);
-			$this->setDtCadastro(new DateTime($linha['dtcadastro'])); //DateTime().
+		if(count($result) > 0){			
+			$this->setData($result[0]);
 		}
 	}
 	//--
@@ -92,14 +96,36 @@ class Usuario{
 		if(count($result) > 0){
 			$linha = $result[0];
 
-			$this->setIdUsuario($linha['idusuario']);
-			$this->setLogin($linha['login']);
-			$this->setSenha($linha['senha']);
-			$this->setDtCadastro(new DateTime($linha['dtcadastro'])); //DateTime().
+			$this->setData($result[0]);
 		}
 		else{
 			throw new Exception("Login e/ou senha inválidos.");
 		}
+	}
+	//--
+
+	//Insert.
+	public function insert(){
+		$sql = new Sql();
+
+		//Procedure no MYSQL -> utiliza a palavra reservada CALL nomeProcedure(Atributos).
+		$result = $sql->select("CALL sp_usuarios_insert(:LOGIN, :SENHA)", array(
+			":LOGIN"=>$this->getLogin(),
+			":SENHA"=>$this->getSenha()
+		)); 
+
+		if(count($result) > 0){
+			$this->setData($result[0]);
+		}
+	}
+	//--
+
+	//Dados.
+	public function setData($data){
+		$this->setIdUsuario($data['idusuario']);
+		$this->setLogin($data['login']);
+		$this->setSenha($data['senha']);
+		$this->setDtCadastro(new DateTime($data['dtcadastro'])); //DateTime().
 	}
 	//--
 
